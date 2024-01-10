@@ -6,11 +6,10 @@ class KeyTokenService {
   constructor() {
     this.keyTokenModel = KeyTokenModel
   }
-  createKeyToken = async ({ userId, publicKey }: { userId: any; publicKey: any }) => {
+  createKeyToken = async ({ userId, publicKey, privateKey }: { userId: any; publicKey: any; privateKey: any }) => {
     try {
-      const publicKeyString = publicKey.toString()
-      const tokens = await this.keyTokenModel.create({ user: userId, publicKey: publicKeyString })
-      return tokens ? publicKeyString : null
+      const tokens = await this.keyTokenModel.create({ user: userId, publicKey, privateKey })
+      return tokens ? tokens.publicKey : null
     } catch (error) {
       return error
     }

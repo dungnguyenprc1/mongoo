@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
+    "@types/lodash": "^4.14.202",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.10.7",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
@@ -43,17 +44,11 @@
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0"
   },
   "_moduleAliases": {
-    "@src": "dist/src",
-    "@routes": "dist/src/routes",
-    "@modules": "dist/src/modules",
-    "@middlewares": "dist/src/helpers/middlewares",
-    "@exceptions": "dist/src/helpers/exceptions",
-    "@functions": "dist/src/helpers/functions",
-    "@database": "dist/src/db",
-    "@db-models": "dist/src/db/models"
+    "@src": "src"
   }
 }

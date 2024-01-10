@@ -1,17 +1,17 @@
 import jwt from 'jsonwebtoken'
 
-export const createTokenPair = async (payload: any, publicKey: string, privateKey: any) => {
+export const createTokenPair = async (payload: any, publicKey: any, privateKey: any) => {
   try {
     const accessToken = await jwt.sign(payload, privateKey, {
       algorithm: 'RS256',
-      expiresIn: '1d'
+      expiresIn: '2 days'
     })
 
     const refreshToken = await jwt.sign(payload, privateKey, {
       algorithm: 'RS256',
-      expiresIn: '7d'
+      expiresIn: '7 days'
     })
-    jwt.verify(accessToken, publicKey, (err, decode) => {
+    jwt.verify(accessToken, publicKey, (err: any, decode: any) => {
       if (err) {
         console.error('error', err)
       } else {
@@ -23,6 +23,6 @@ export const createTokenPair = async (payload: any, publicKey: string, privateKe
       refreshToken
     }
   } catch (error) {
-    console.log(error)
+    // console.log(error)
   }
 }

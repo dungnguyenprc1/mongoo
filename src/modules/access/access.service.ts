@@ -4,6 +4,7 @@ import { Model } from 'mongoose'
 import KeyTokenService from '../keytoken/keyToken.service'
 import { createTokenPair } from '@src/auth/authUtils'
 import ShopModel, { IShop } from '@src/models/shop.model'
+import { getInfoData } from '@src/utils'
 
 const RolesShop = {
   SHOP: 'SHOP',
@@ -28,23 +29,39 @@ class AccessService {
       const newShop = await this.shopModel.create({ name, email, password: passwordHash, roles: [RolesShop.SHOP] })
       if (newShop) {
         //created privateKey, publicKey
-        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-          modulusLength: 4096
+        // const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+        //   modulusLength: 4096,
+        //   publicKeyEncoding: {
+        //     type: 'pkcs1',
+        //     format: 'pem'
+        //   },
+        //   privateKeyEncoding: {
+        //     type: 'pkcs1',
+        //     format: 'pem'
+        //   }
+        // })
+        const privateKey = crypto.randomBytes(64).toString('hex')
+        const publicKey = crypto.randomBytes(64).toString('hex')
+
+        const keyStore: any = await this.keyTokenService.createKeyToken({
+          userId: newShop._id,
+          publicKey,
+          privateKey
         })
-        const publicKeyString = await this.keyTokenService.createKeyToken({ userId: newShop._id, publicKey })
-        if (!publicKeyString) {
+        if (!keyStore) {
           return {
             code: 'xxxx',
             message: 'error create key'
           }
         }
+        // const publicKeyObject = crypto.createPublicKey(publicKeyString)
         //create token pair
-        const tokens = await createTokenPair({ userId: newShop._id, email }, publicKeyString, privateKey)
+        const tokens = await createTokenPair({ userId: newShop._id, email }, publicKey, privateKey)
         console.log(`Created Token Success::`, tokens)
         return {
           code: 201,
           metadata: {
-            shop: newShop,
+            shop: getInfoData({ fields: ['_id', 'name', 'email'], object: newShop }),
             tokens
           }
         }

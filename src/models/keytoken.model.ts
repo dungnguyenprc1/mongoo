@@ -7,6 +7,7 @@ export interface IKeyToken {
   user: any
   publicKey: string
   refreshToken: string[] | undefined[]
+  privateKey: string[] | undefined[]
 }
 const keyTokenShema = new Schema<IKeyToken>(
   {
@@ -16,7 +17,12 @@ const keyTokenShema = new Schema<IKeyToken>(
       ref: 'Shop'
     },
     publicKey: {
-      type: String
+      type: String,
+      required: true
+    },
+    privateKey: {
+      type: String,
+      required: true
     },
     refreshToken: {
       type: Array,

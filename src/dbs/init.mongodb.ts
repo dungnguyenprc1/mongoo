@@ -14,7 +14,7 @@ import mongoose from 'mongoose'
 
 // const { app, db } = configDB
 
-const connectString = `mongodb://127.0.0.1/`
+const connectString = `mongodb://localhost:27017/shopDev`
 
 class Database {
   static instance: any
